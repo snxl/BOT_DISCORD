@@ -1,3 +1,3 @@
 ﻿# BOT_DISCORD 🤖
 
-Branch Edu
+Main branch
