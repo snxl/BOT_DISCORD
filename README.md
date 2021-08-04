@@ -1,3 +1,5 @@
+﻿Fix Branch 2
+
 ﻿# BOT_DISCORD 🤖
 
 INSTRUÇÕES
