@@ -11,14 +11,14 @@ client.once("ready", () => {
 
 client.on("message", (message) => {
 	const { channel, content, author } = message;
-	if (!content.startsWith(prefix)) return;
-	if (author.bot || channel.id !== channelId) return;
+	if (!content.startsWith(prefix) || author.bot || channel.id !== channelId)
+		return;
 
 	//-----------------------------------------------------------------------
 
 	// return test(message);
 
-	return message.reply("Works fine!")
+	return message.reply("Works fine!");
 
 	//-----------------------------------------------------------------------
 
