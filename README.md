@@ -1,3 +1,5 @@
 ﻿# BOT_DISCORD 🤖
 
-Main branch
+Joao branch
+
+v1.2
