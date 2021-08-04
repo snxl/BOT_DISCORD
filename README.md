@@ -1,6 +1,4 @@
-﻿Fix Branch 2
-
-﻿# BOT_DISCORD 🤖
+# BOT_DISCORD 🤖
 
 INSTRUÇÕES
 
