@@ -1,5 +1,5 @@
 ﻿# BOT_DISCORD 🤖
 
-Joao branch
+João branch
 
-v1.2
+Base Files 1.2
