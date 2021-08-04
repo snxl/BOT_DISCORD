@@ -7,7 +7,8 @@ INSTRUÇÕES
 ```json
 {
     "token": "seu-token-aqui",
-    "channelName": "nome-do-seu-canal"
+    "channelName": "nome-do-seu-canal",
+		"prefix": "!"
 }
 ```
 
