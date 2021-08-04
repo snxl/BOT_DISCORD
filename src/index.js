@@ -1,5 +1,5 @@
 const { Client, Intents } = require('discord.js');
-const { token } = require('../config.json');
+const { token, channelName } = require('../config.json');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
@@ -10,7 +10,7 @@ client.once('ready', () => {
 client.on('message', message => {
 	const { channel, content, author, createdTimestamp } = message;
 
-	if (author.bot || channel.name !== 'edu-bot') return;
+	if (author.bot || channel.name !== channelName) return;
 
 	const response = `sent a message on channel ${channel} at ${createdTimestamp}: ${content}`;
 
