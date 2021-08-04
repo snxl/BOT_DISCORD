@@ -10,7 +10,7 @@ client.once('ready', () => {
 client.on('message', message => {
 	const { channel, content, author, createdTimestamp } = message;
 
-	if (author.bot || channel.name !== 'bot-tests') return;
+	if (author.bot || channel.name !== 'edu-bot') return;
 
 	const response = `sent a message on channel ${channel} at ${createdTimestamp}: ${content}`;
 
