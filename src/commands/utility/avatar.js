@@ -11,6 +11,8 @@ module.exports = {
 			return message.channel.send(response);
 		}
 
+		console.log(message.author.displayAvatarURL());
+
 		return message.channel.send(`${message.author.username}, seu avatar: ${message.author.displayAvatarURL({ dynamic: true, size: 256 })}`);
 	},
 };
