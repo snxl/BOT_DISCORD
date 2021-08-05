@@ -8,8 +8,8 @@ import {
 
 export default {
 	name: "test",
-	run(message: Message) {
-		return message.channel.send("Test handler");
+	async run(message: Message) {
+		return await message.channel.send('test handler')
 
 		const questions = [
 			"Qual o seu nome?",

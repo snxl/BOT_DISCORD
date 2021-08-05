@@ -6,7 +6,7 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon -q --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/index.ts\""
+    "dev": "nodemon -q --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node src/index.ts\""
   },
   "dependencies": {
     "discord.js": "^12.5.3",
