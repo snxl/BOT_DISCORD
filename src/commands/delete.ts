@@ -4,6 +4,6 @@ export default {
     name: "delete",
     description: "Delete the sent message",
     async run(message: Message) {
-        await message.delete();
+       await message.delete();
     }
 }

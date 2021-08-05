@@ -11,7 +11,7 @@ const commandFiles = fs
 type Command = {
 	name: string;
 	description: string;
-	run: (message: Message) => Promise<void>;
+	run: (message: Message, args?: string[] | undefined) => Promise<void>;
 };
 
 export const commands: any = {
@@ -21,19 +21,20 @@ export const commands: any = {
 };
 
 commandFiles.forEach((fileName) => {
-	const command = require(path.join(commandsPath, fileName))
-	commands[fileName.slice(0, -3)] = { ...command.default};
+	const command = require(path.join(commandsPath, fileName));
+	commands[fileName.slice(0, -3)] = { ...command.default };
 });
 
 export default async (message: Message) => {
 	const args = getArgsFromMsg(message.content);
 	const cmdName = args[0];
+	const options = args.slice(1)
 
 	if (!commands.has(cmdName))
 		return await message.reply("comando não encontrado.");
 
 	try {
-		await (commands[cmdName] as Command).run(message);
+		await (commands[cmdName] as Command).run(message, options);
 	} catch (err) {
 		console.log(err);
 		await message.reply("algo deu errado.");
