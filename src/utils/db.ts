@@ -3,7 +3,7 @@ import path from "path";
 
 const pollsFilePath = path.resolve(__dirname, "polls.json");
 
-type OptionsObj = { name: string; reactionEmoji: string; count: number }[];
+export type OptionsObj = { name: string; reactionEmoji: string; count: number }[];
 type Poll = {
 	msgId: string;
 	title: string;
