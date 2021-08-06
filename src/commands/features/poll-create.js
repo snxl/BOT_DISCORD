@@ -1,28 +1,53 @@
 const express = require('express');
-const { Client, Intents, Collection } = require("discord.js");
-const router = express.Router();
 const nodeHtmlToImg = require('node-html-to-image');
-const path = require('path');
+var fs = require('fs');
+const pollResult = require('./poll-result');
 require('discord-reply');
 
-//!poll 10 | Qual é o maior país da américa? | Brasil | Estados Unidos | Canadá
-
 module.exports = {
-    name: "poll",
+    name: "poll-create",
     description: "Creates a poll to decide something important or not.",
     args: false,
-    async execute(message, args, client) {
+    async execute(message, args) {
         // Criar pool
 		const pollArgs = args.join(" ").split("|");
+		
+		let Poll = {}
+		
+		let pollKey = '';
+		
+		let idCharacters = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz1234567890';
+		
+		for ( let i = 0; i < 5; i++) {
+			pollKey += idCharacters[Math.floor(Math.random() * idCharacters.length)]
+		}
+		
+		Poll.Id = pollKey;
+		
+		if( pollArgs.length < 3) return message.channel.send("Revise o comando!");
+		if( pollArgs.length > 5 ) return message.channel.send("Somente 3 opções são suportatas no momento.");
+		
 		let expiration = parseInt(pollArgs[0]);
-		const subject = pollArgs[1].trim();
+		
+		if(expiration < 10 || expiration > 600) return message.channel.send("Expiração precisa ser entre 10 e 600");
+		
+		Poll.Expiration = expiration;
+		
+		if(isNaN(expiration)) return message.channel.send("Expiração precisa ser um número inteiro a partir de 0.");
+		
+		const pollSubject = pollArgs[1].trim();
+		
+		Poll.Subject = pollSubject;
 		
 		let options = '';
 		
-		//console.log(pollArgs.length)
+		let reactionsAmount = 0;
+		
+		Poll.Options = []
 		
 		for ( var i = 2; i < pollArgs.length; i++) {
-			//console.log(pollArgs[i].trim())
+			reactionsAmount++;
+			Poll.Options.push({Option: pollArgs[i].trim(), Votes: 0})
 			options += `<article class="option${i-1}">
 							<span>${i-1}</span>
 							<label>${pollArgs[i].trim()}</label>
@@ -34,6 +59,7 @@ module.exports = {
 			<head>
 				<style>
 					body {
+						position: relative;
 						width: 400px;
 						height: 300px;
 						background-color: white;
@@ -91,16 +117,26 @@ module.exports = {
 						color: #4dbb31;
 					}
 					
-					.option6 {
+					.option5 {
 						color: #b76aff;
+					}
+					
+					.pollId {
+						position: absolute;
+						right: 20px;
+						top: 10px;
+						font-size: 16px;
+						color: #AAA;
+						font-weight: 600;
 					}
 				</style>
 			</head>
 			<body>
+				<div class="pollId">${pollKey}</div>
 				
 				<main>
-					
-					<h2>${subject}</h2>
+				
+					<h2>${pollSubject}</h2>
 					
 					<session>
 						
@@ -120,10 +156,28 @@ module.exports = {
 			files: [image],
 		})
 		
-		msg.react('1️⃣');
-		msg.react('2️⃣');
-		msg.react('3️⃣');
-	
+		let pollMessageId = msg.id;
+		
+		Poll.pollId = pollMessageId;
+		
+		fs.readFile('./src/polls.json', 'utf8', function readFileCallback(err, data){
+			if (err){
+				console.log(err);
+			} else {
+			let jsonObj = JSON.parse(data);
+			jsonObj.push(Poll);
+			json = JSON.stringify(jsonObj);
+			fs.writeFile('./src/polls.json', json, 'utf8', function() { });
+		}});
+		
+		for(let i = 0; i < reactionsAmount; i++) {
+			if (i == 0) msg.react('1️⃣');
+			if (i == 1) msg.react('2️⃣');
+			if (i == 2) msg.react('3️⃣');
+			if (i == 3) msg.react('4️⃣');
+			if (i == 4) msg.react('5️⃣');
+		}
+		
 		let interval = setInterval(function() {
 			expiration--;
 			msg.edit(expiration + " segundos restantes")
@@ -131,38 +185,9 @@ module.exports = {
 			if( expiration <= 0 ) {
 				clearInterval(interval);
 				msg.edit('Votação finalizada');
-				let oneCount = msg.reactions.cache.get('1️⃣').count - 1;
-				let twoCount = msg.reactions.cache.get('2️⃣').count - 1;
-				let threeCount = msg.reactions.cache.get('3️⃣').count - 1;
 				
-				(async function() {
-					const resultImage = await nodeHtmlToImg({
-						html: `<html><head><style>
-						body {
-							font-family: Calibri;
-							width: 200px;
-							height: 200px;
-							background-color: dodgerblue;
-							color: white;
-						}
-						</style></head><body>
-							<div>1️⃣: ${oneCount}</div>
-							<div>2️⃣: ${twoCount}</div>
-							<div>3️⃣: ${threeCount}</div>
-						</body></html>`,
-						quality: 100,
-						transparent: true,
-					});
-								
-					msg.lineReply('', {
-						files: [resultImage]
-					});
-				})();
+				pollResult.execute(message, pollKey);
 			}
-			
 		}, 1000);
     },
 };
-
-
-
