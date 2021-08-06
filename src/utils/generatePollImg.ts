@@ -51,6 +51,7 @@ export default async (title: string, options: { name: string; count: number }[])
         padding: 3rem;
         display: flex;
         flex-direction: column;
+        background-color: white;
     }
     
     .content h1 {
