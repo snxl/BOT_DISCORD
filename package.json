@@ -11,7 +11,8 @@
   "dependencies": {
     "discord.js": "^12.5.3",
     "discord.js-poll": "^1.0.4",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "node-html-to-image": "^3.2.0"
   },
   "devDependencies": {
     "@types/node": "^16.4.10",
