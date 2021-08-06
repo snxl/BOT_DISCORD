@@ -3,8 +3,8 @@ import nodeHtmlToImage from "node-html-to-image";
 
 const imagePath = path.resolve(__dirname, "image.png");
 
-const colors = ["blue", "red", "green", "purple"];
-const alphabet = ["A", "B", "C", "D", "E"];
+const colors = ["#EF476F", "#FFD166", "#06D6A0", "#118AB2", "#073B4C", "#F5D6BA", "#2C2C54"];
+const alphabet = ["A", "B", "C", "D", "E", "F", "G"];
 
 export default async (title: string, options: { name: string; count: number }[]): Promise<string> => {
 
@@ -26,7 +26,6 @@ export default async (title: string, options: { name: string; count: number }[])
 
 	const headTemplate = `<head>
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Georama:wght@400;600&display=swap');
     html {
         font-size: 62.5%;
     }
@@ -38,7 +37,7 @@ export default async (title: string, options: { name: string; count: number }[])
     }
     
     body {
-        font-family: 'Georama', sans-serif;
+        font-family: 'Roboto', sans-serif;
         width: fit-content;
         height: fit-content;
     }
@@ -46,6 +45,7 @@ export default async (title: string, options: { name: string; count: number }[])
     .content {
         min-height: 200px;
         min-width: 300px;
+        max-width: 300px;
         height: fit-content;
         width: fit-content;
         padding: 3rem;
@@ -57,7 +57,6 @@ export default async (title: string, options: { name: string; count: number }[])
     .content h1 {
         font-size: 2rem;
         text-align: center;
-        color: rgb(93 97 239);
     }
     
     .content ul {
@@ -68,14 +67,14 @@ export default async (title: string, options: { name: string; count: number }[])
     
     .content ul li {
         list-style: none;
-        margin: 1.5rem 0;
+        margin: 1.5rem 0 0 0;
         display: flex;
         flex-wrap: wrap;
     }
     
     .content ul li div:first-child span {
         display: inline-block;
-        background-color: rgb(224, 224, 224);
+        background-color: rgba(224, 224, 224, .8);
         color: blue;
         width: 3ch;
         height: 3ch;
@@ -106,6 +105,7 @@ export default async (title: string, options: { name: string; count: number }[])
     }
     
     .content ul li div:nth-child(3) {
+        font-weight: bold;
         display: block;
         width: 100%;
         margin-top: .3rem;
@@ -124,7 +124,7 @@ export default async (title: string, options: { name: string; count: number }[])
                         option.name
                     }</div>
             <div style="color: ${colors[i]};">${totalVotes ? getPercentage(option.count) : 0}</div>
-            <div style="background-color: ${colors[i]}; margin-right: ${totalVotes ? `calc(100% - ${getPercentage(option.count)})` : "0"};"></div>
+            <div style="background-color: ${colors[i]}; margin-right: ${totalVotes ? `calc(100% - ${getPercentage(option.count)})` : "100%"};"></div>
         </li>`
 		)
 		.join("");

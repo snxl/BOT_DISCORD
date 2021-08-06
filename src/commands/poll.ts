@@ -2,35 +2,7 @@ import { Message, MessageAttachment, MessageEmbed } from "discord.js";
 import { createPoll, vote, hasVoted } from "../utils/db";
 import generatePollImg from "../utils/generatePollImg";
 import { pollArgsToObj } from "../utils/utils";
-
-const alphabet = [
-	"🇦",
-	"🇧",
-	"🇨",
-	"🇩",
-	"🇪",
-	"🇫",
-	"🇬",
-	"🇭",
-	"🇮",
-	"🇯",
-	"🇰",
-	"🇱",
-	"🇲",
-	"🇳",
-	"🇴",
-	"🇵",
-	"🇶",
-	"🇷",
-	"🇸",
-	"🇹",
-	"🇺",
-	"🇻",
-	"🇼",
-	"🇽",
-	"🇾",
-	"🇿",
-];
+import { alphabet } from "../utils/constants";
 
 export default {
 	name: "poll",
@@ -47,7 +19,8 @@ export default {
 				description: `
 					${options
 						.map(
-							(option, index) => `${alphabet[index]} **(0)** - ${option}\n\n`
+							(option, index) =>
+								`${alphabet[index]} **(0)** - ${option}\n\n`
 						)
 						.join("")}
 				`,
@@ -97,10 +70,8 @@ export default {
 		);
 
 		const imagePath = await generatePollImg(title, adjustedOptions);
-		const imgFile = new MessageAttachment(imagePath);
-		const embedImg: any = new MessageEmbed().setImage("attachment://image.png");
-		await message.channel
-			.send({ embed: embedImg, files: [imgFile] })
+		message.channel
+			.send("", {files: [imagePath]})
 			.then(async (msg) => {
 				if (!optionName) message.delete();
 				let optionsObj: any = [];
@@ -108,12 +79,16 @@ export default {
 					optionsObj = await Promise.all(
 						options.map(async (option, i) => {
 							await msg.react(alphabet[i]);
-							return { name: option, reactionEmoji: alphabet[i], count: 0 };
+							return {
+								name: option,
+								reactionEmoji: alphabet[i],
+								count: 0,
+							};
 						})
 					);
 				} else {
-					await msg.react("👍");
-					await msg.react("👎");
+					msg.react("👍");
+					msg.react("👎");
 					optionsObj = [
 						{ name: "Sim", reactionEmoji: "👍", count: 0 },
 						{ name: "Não", reactionEmoji: "👎", count: 0 },
@@ -134,18 +109,14 @@ export default {
 		);
 
 		const adjustedOptions: { name: string; count: number }[] = options.map(
-			({name, count}) => ({ name, count })
+			({ name, count }) => ({ name, count })
 		);
 
 		const imagePath = await generatePollImg(title, adjustedOptions);
-		const imgFile = new MessageAttachment(imagePath);
-		const embedImg: any = new MessageEmbed().setImage("attachment://image.png");
-		await message.channel
-			.send({ embed: embedImg, files: [imgFile] })
-		.then((msg) => {
+		message.channel.send("", { files: [imagePath] }).then((msg) => {
 			message.delete();
 			options.forEach(async (option) => {
-				await msg.react(option.reactionEmoji);
+				msg.react(option.reactionEmoji);
 			});
 			updateId(msg.id);
 		});
