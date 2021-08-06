@@ -3,109 +3,91 @@ import nodeHtmlToImage from "node-html-to-image";
 
 const imagePath = path.resolve(__dirname, "image.png");
 
-const colors = ["#EF476F", "#FFD166", "#06D6A0", "#118AB2", "#073B4C", "#F5D6BA", "#2C2C54"];
-const alphabet = ["A", "B", "C", "D", "E", "F", "G"];
+const colors = ["#EF476F", "#77dd77", "#06D6A0", "#118AB2", "#89cff0", "#F5D6BA", "#836953", "#B39EB5", "#B2FBA5", "#AAF0D1"];
+const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 
 export default async (title: string, options: { name: string; count: number }[]): Promise<string> => {
-
-	// const options = [
-	// 	{ name: "Opção 1", count: 1 },
-	// 	{ name: "Opção 2", count: 0 },
-	// 	{ name: "Opção 3", count: 1 },
-	// 	{ name: "Opção 4", count: 1 },
-	// ];
-
 	const totalVotes = Object.values(options).reduce(
 		(acc, curr) => acc + curr.count,
 		0
 	);
 	const getPercentage = (value: number) => ((value * 100) / totalVotes).toFixed() + "%";
 
-	// templates -----------------------------------
-	// const title = "Qual opção escolher?";
-
 	const headTemplate = `<head>
-<style>
+    <style>
     html {
         font-size: 62.5%;
     }
-    
+
     * {
         padding: 0;
         margin: 0;
         box-sizing: border-box;
     }
-    
+
     body {
         font-family: 'Roboto', sans-serif;
         width: fit-content;
         height: fit-content;
     }
-    
+
     .content {
         min-height: 200px;
-        min-width: 300px;
-        max-width: 300px;
+        width: 300px;
         height: fit-content;
-        width: fit-content;
         padding: 3rem;
         display: flex;
         flex-direction: column;
         background-color: white;
     }
-    
+
     .content h1 {
         font-size: 2rem;
         text-align: center;
     }
-    
+
     .content ul {
         margin-top: 2rem;
         font-size: 1.5rem;
         text-align: start;
     }
-    
+
     .content ul li {
         list-style: none;
         margin: 1.5rem 0 0 0;
         display: flex;
         flex-wrap: wrap;
     }
-    
-    .content ul li div:first-child span {
-        display: inline-block;
-        background-color: rgba(224, 224, 224, .8);
+
+    .option {
+        flex: 5;
+        display: flex;
+        align-items: center;
+    }
+
+    .index {
+        align-self: flex-start;
+        background-color: rgba(224, 224, 224, .6);
         color: blue;
         width: 3ch;
         height: 3ch;
+        aspect-ratio: 1;
         border-radius: 50%;
         padding: .5rem;
         text-align: center;
         font-weight: bold;
         margin-right: 1rem;
     }
-    
-    .content ul li div:first-child {
-        width: 30%;
-        display: flex;
-        align-items: center;
-        width: fit-content;
-    }
-    
-    .content ul li div:nth-child(2) {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: end;
-        width: 70%;
+
+    .percentage {
+        flex: 1;
         width: fit-content;
         display: block;
         color: blue;
-        margin: auto 0 auto auto;
+        margin: auto 0 0 .5rem;
     }
-    
-    .content ul li div:nth-child(3) {
-        font-weight: bold;
+
+    .bar {
         display: block;
         width: 100%;
         margin-top: .3rem;
@@ -120,11 +102,12 @@ export default async (title: string, options: { name: string; count: number }[])
 		.map(
 			(option, i) => `
         <li>
-            <div><span style="color: ${colors[i]};">${alphabet[i]}</span>${
-                        option.name
-                    }</div>
-            <div style="color: ${colors[i]};">${totalVotes ? getPercentage(option.count) : 0}</div>
-            <div style="background-color: ${colors[i]}; margin-right: ${totalVotes ? `calc(100% - ${getPercentage(option.count)})` : "100%"};"></div>
+            <div class="option">
+                <div class="index" style="color: ${colors[i]};">${alphabet[i]}</div>
+                <div class="option">${option.name}</div>
+                <div class="percentage" style="color: ${colors[i]};">${totalVotes ? getPercentage(option.count) : ""}</div>
+            </div>
+            <div class="bar" style="background-color: ${colors[i]}; margin-right: ${totalVotes ? `calc(100% - ${getPercentage(option.count)})` : "100%"};"></div>
         </li>`
 		)
 		.join("");

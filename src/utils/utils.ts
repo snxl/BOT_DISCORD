@@ -8,11 +8,11 @@ export const pollArgsToObj = (
 	args: string[]
 ): { title: string; options: string[] } => {
 	const splitted = args?.join(" ").split("?");
-	const options = splitted[1].split(";");
+	const options = splitted[1].split(";").map(o => o.trim()).filter(f => f);
 	return {
 		title: splitted[0] + "?",
 		options:
-			options.length === 1 && !options[0]
+			options.length === 1
 				? []
 				: options.map((v) => v.trim()),
 	};

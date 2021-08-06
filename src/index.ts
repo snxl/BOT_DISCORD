@@ -1,6 +1,6 @@
 import { Client } from "discord.js";
 import { token, channelId, prefix } from "../config.json";
-import commandHandler, {commands} from "./commandHandler";
+import commandHandler, { commands } from "./commandHandler";
 import { pollExists } from "./utils/db";
 
 const client = new Client();
@@ -18,13 +18,36 @@ client.on("message", (message) => {
 	commandHandler(message);
 });
 
-client.on("messageReactionAdd", (reaction_orig, user) => {
-	if (
-		reaction_orig.message.author.bot &&
-		!user.bot &&
-		pollExists(reaction_orig.message.id)
-	) {
-		commands.poll.vote(reaction_orig.message, user.id, reaction_orig.emoji.name);
+let lastReact: string[] = [];
+client.on("messageReactionAdd", async (reaction, user) => {
+	try {
+		if (
+			reaction.message.author.bot &&
+			!user.bot &&
+			pollExists(reaction.message.id)
+		) {
+			if (lastReact[0] === reaction.message.id && lastReact[1] === user.id) {
+				return;
+			}
+			const isImg = Boolean(reaction.message.attachments.size)
+			lastReact = [reaction.message.id, user.id];
+			if(isImg) {
+				commands["poll-img"].vote(
+					reaction.message,
+					user.id,
+					reaction.emoji.name
+				);
+			} else {
+				commands.poll.vote(
+					reaction.message,
+					user.id,
+					reaction.emoji.name
+				);
+			}
+		}
+	} catch (err) {
+		console.log("Erro:", err)
+		reaction.message.channel.send("Ops! Algo deu errado.")
 	}
 });
 
