@@ -1,7 +1,7 @@
 import path from "path";
 import nodeHtmlToImage from "node-html-to-image";
 
-const imagePath = path.resolve(__dirname, "image.png");
+const imagePath = path.resolve(__dirname, "../assets/image.png");
 
 const colors = ["#EF476F", "#77dd77", "#06D6A0", "#118AB2", "#89cff0", "#F5D6BA", "#836953", "#B39EB5", "#B2FBA5", "#AAF0D1"];
 const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];

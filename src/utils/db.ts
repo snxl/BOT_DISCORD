@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const pollsFilePath = path.resolve(__dirname, "polls.json");
+const pollsFilePath = path.resolve(__dirname, "../data/polls.json");
 
 export type OptionsObj = { name: string; reactionEmoji: string; count: number }[];
 type Poll = {
