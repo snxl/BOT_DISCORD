@@ -13,7 +13,7 @@
             padding: 0;
         }
         
-        main {
+        .body {
             width: 400px;
             height: 300px;
             background-color: white;
@@ -24,78 +24,133 @@
             border-radius: 5px;
         }
         
-        h2 {
+        header {
+            position: relative;
+        }
+        
+        header h2 {
             padding: 20px;
             color: #444;
-            margin: 10px 0;
+            margin: 0px 0;
+            font-size: 2.2vh;
+        }
+        
+        header span {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            color: #888;
         }
         
         session {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 15px;
         }
         
         article {
-            background-color: transparent;
+            position: relative;
             padding: 0 20px;
+            flex: 1;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            border-top: 1px solid #EEE;
         }
         
-        article label {
-            line-height: 24px;
-            font-size: 18px;
-            color: #555;
-        }
-        
-        span {
+        article span {
             background-color: #EFEFEF;
             padding: 1px 8px 3px 8px;
             border-radius: 50%;
             font-weight: bold;
+            z-index: 1;
+        }
+        
+        article label {
+            line-height: 24px;
+            color: #555;
+            text-align: justify;
+            font-size: 1.5vh;
+            z-index: 1;
+        }
+        
+        article.result {
+            border: none;
+        }
+        
+        article.result span {
+            border-radius: 10px;
+            font-size: 1.2vh;
+            margin-left: -10px;
+            text-align: center;
+            background-color: white;
+        }
+        
+        article div {
+            position: absolute;
+            left: 0;
+            width: 30%;
+            height: 100%;
+            z-index: 0;
         }
         
         .option1 {
             color: #0A86FF;
         }
         
+        .option1 div {
+            background-color: #0A86FF88;
+        }
+        
         .option2 {
             color: #FFA539;
+        }
+        
+        .option2 div {
+            background-color: #ffa63988;
         }
         
         .option3 {
             color: #FF6A83;
         }
         
-        .option4 {
-            color: #4dbb31;
+        .option3 div {
+            background-color: #FF6A8388;
         }
         
-        .option6 {
-            color: #b76aff;
-        }
     </style>
 </head>
 <body>
     
-    <main>
+    <main class="body">
         
-        <h2>Título da votação</h2>
+        <header>
+            
+            <h2>Título da votação ou algo grande pra por aqui <samp>Win</samp></h2>
+            
+            <span>asd12</span>
+            
+        </header>
         
         <session>
             
-            <article class="option1">
-                <span>1</span>
+            <article class="option1 result">
+                <span>20%<br/>33</span>
                 <label>Alguma informação grande</label>
+                <div></div>
+                
             </article>
             
-            <article class="option2">
-                <span>2</span>
-                <label>Alguma informação grande ou pequena ou de qualquer tamanho</label>
+            <article class="option2 result">
+                <span>20%<br/>33</span>
+                <label>Alguma informação grande ou pequena ou de qualquer tamanho ou qualquer size de acordo</label>
+                <div></div>
             </article>
             
-            <article class="option3">
-                <span>3</span>
-                <label>Alguma informação grande ou pequena ou de qualquer tamanho</label>
+            <article class="option3 result">
+                <span>20%<br/>33</span>
+                <label>Alguma informação grande ou pequena ou de qualquer tamanho ou qualquer size de acordo com algo inferior ou superior que possa</label>
+                <div></div>
             </article>
             
         </session>
