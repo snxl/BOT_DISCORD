@@ -2,5 +2,4 @@
 
 João branch
 
-Base Files 1.2
-Upstream changes
+A lot to come!
